@@ -25,7 +25,7 @@ const ValidActions = {
 
 const Flags = {
   'bitcoin-cli': {
-    config: process.env.BITCOIN_CONFIG_PATH ?? '',
+    conf: process.env.BITCOIN_CONFIG_PATH ?? '',
   },
   ord: {
     'bitcoin-data-dir': process.env.BITCOIN_DATA_DIR,
