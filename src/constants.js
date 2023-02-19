@@ -1,7 +1,7 @@
 const AppResponse = {
   INVALID_INPUT: (message) => ({
     success: false,
-    code: 400,
+    status: 400,
     message: message ?? 'Invalid Input',
   }),
   SERVER_ERROR: (message) => ({
@@ -23,8 +23,20 @@ const ValidActions = {
   ord: ['wallet'],
 };
 
+const Flags = {
+  'bitcoin-cli': {
+    'bitcoin-data-dir': process.env.BITCION_DATA_DIR,
+    config: process.env.BITCION_CONFIG_PATH ?? '',
+  },
+  ord: {
+    'bitcoin-data-dir': process.env.BITCION_DATA_DIR,
+    config: process.env.ORD_CONFIG,
+  },
+};
+
 module.exports = {
   ValidCommands,
   AppResponse,
   ValidActions,
+  Flags,
 };

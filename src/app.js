@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const { exec } = require('child_process');
@@ -14,6 +15,7 @@ app.get('/:command/:action', async function (req, res) {
     req.params.command,
     req.params.action,
     req.query.params,
+    req.query.flags,
     async (result) => {
       res.status(result.status).send(result);
     }

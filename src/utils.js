@@ -1,17 +1,40 @@
 const { exec } = require('child_process');
 
-const { ValidCommands, AppError, AppResponse } = require('./constants');
+const {
+  ValidCommands,
+  AppResponse,
+  ValidActions,
+  Flags,
+} = require('./constants');
 
-const call = async function (command, action, args = [], cb) {
+const call = async function (command, action, args = [], flags = [], cb) {
   if (!ValidCommands.includes(command)) {
-    return AppError.INVALID_INPUT();
+    return await cb(AppResponse.INVALID_INPUT());
+  }
+
+  if (!ValidActions[command].includes(action)) {
+    return await cb(AppResponse.INVALID_INPUT());
   }
   args = JSON.parse(args);
-  let params = args.length ? args.pop().join(' ') : '';
+  console.log(args);
+  let params = args.join(' ');
+  flags = JSON.parse(flags);
+  let flagString = '';
+  const flagPrefix = command == 'ord' ? '--' : '-';
+  flags.forEach((v) => {
+    let key = typeof v == 'object' ? Object.keys(v)[0] : v;
+    flagString += `${flagPrefix}${key}=${
+      Flags[command][key] ?? Object.values(v)[0]
+    } `;
+  });
+  Object.keys(Flags[command]).forEach((k) => {
+    flagString += `${flagPrefix}${k}=${Flags[command][k]} `;
+  });
 
-  exec(`${command} ${action} ${params}`, async (error, stdout, stderr) => {
+  const fullCommand = `${command} ${flagString} ${action} ${params}`;
+  console.log(fullCommand);
+  exec(`${fullCommand}`, async (error, stdout, stderr) => {
     if (error) {
-      console.log(error.messag);
       await cb(AppResponse.SERVER_ERROR(error.message));
       return;
     }
