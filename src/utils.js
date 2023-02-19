@@ -15,10 +15,10 @@ const call = async function (command, action, args = [], flags = [], cb) {
   if (!ValidActions[command].includes(action)) {
     return await cb(AppResponse.INVALID_INPUT());
   }
-  args = JSON.parse(args);
+  args = JSON.parse(args ?? []);
   console.log(args);
   let params = args.join(' ');
-  flags = JSON.parse(flags);
+  flags = JSON.parse(flags ?? []);
   let flagString = '';
   const flagPrefix = command == 'ord' ? '--' : '-';
   flags.forEach((v) => {
