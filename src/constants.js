@@ -25,11 +25,11 @@ const ValidActions = {
 
 const Flags = {
   'bitcoin-cli': {
-    'bitcoin-data-dir': process.env.BITCION_DATA_DIR,
-    config: process.env.BITCION_CONFIG_PATH ?? '',
+    'bitcoin-data-dir': process.env.BITCOIN_DATA_DIR,
+    config: process.env.BITCOIN_CONFIG_PATH ?? '',
   },
   ord: {
-    'bitcoin-data-dir': process.env.BITCION_DATA_DIR,
+    'bitcoin-data-dir': process.env.BITCOIN_DATA_DIR,
     config: process.env.ORD_CONFIG,
   },
 };
