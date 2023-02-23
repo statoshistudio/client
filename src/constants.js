@@ -21,7 +21,7 @@ const ValidCommands = ['bitcoin-cli', 'ord'];
 const ValidActions = {
   'bitcoin-cli': [
     'sendrawtransaction',
-    'importdescriptor',
+    'importdescriptors',
     'getdescriptorinfo',
   ],
   ord: ['wallet'],
