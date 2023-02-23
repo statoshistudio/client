@@ -26,7 +26,6 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
     ).catch((e) => {
       throw e;
     });
-    console.log('CREATEWALLET', createWallet);
   } catch (e) {
     if (e.message.includes('error') && !e.message.includes('exist')) {
       return res.status(500).send(createWallet);
@@ -36,7 +35,7 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
     'bitcoin-cli',
     'getdescriptorinfo',
     [`"tr(${tr}/0/*)"`],
-    ['named'],
+    [],
     async (result1) => {
       await call(
         'bitcoin-cli',
