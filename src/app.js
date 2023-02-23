@@ -48,7 +48,7 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
           await call(
             'bitcoin-cli',
             'importdescriptors',
-            [JSON.stringify(template).replace(/"/g, '\\"')],
+            [`'${JSON.stringify(template).replace(/'/g, "\\'")}`],
             [{ rpcwallet: wallet }],
             async (result2) => {
               res.status(result2.success ? 200 : 500).send(template);
