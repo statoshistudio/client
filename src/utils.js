@@ -67,4 +67,5 @@ const call = function (command, action, args = [], flags = [], cb) {
 
 module.exports = {
   call,
+  callAsync,
 };
