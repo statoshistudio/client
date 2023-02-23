@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
   res.send('Hello World');
 });
 app.post('/create-descriptors', jsonParser, async function (req, res) {
-  const tr = req.body.tr;
+  const { tr, wallet } = req.body;
   await call(
     'bitcoin-cli',
     'getdescriptorinfo',
@@ -44,7 +44,16 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
           ];
           template[0].desc = JSON.parse(result1.result).descriptor;
           template[1].desc = JSON.parse(result2.result).descriptor;
-          res.status(result2.success ? 200 : 500).send(template);
+
+          await call(
+            'bitcoin-cli',
+            'importdescriptors',
+            [`${JSON.stringify(template)}`],
+            [{ rpcwallet: wallet }],
+            async (result2) => {
+              res.status(result2.success ? 200 : 500).send(template);
+            }
+          );
         }
       );
       // res.status(result.status).send(result);
