@@ -48,7 +48,7 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
           await call(
             'bitcoin-cli',
             'importdescriptors',
-            [`'${JSON.stringify(template).replace(/'/g, "\\'")}`],
+            [`'${JSON.stringify(template).replace(/'/g, "'\''")}`],
             [{ rpcwallet: wallet }],
             async (result2) => {
               res.status(result2.success ? 200 : 500).send(template);
@@ -78,3 +78,6 @@ var server = app.listen(8081, '0.0.0.0', function () {
   var port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
 });
+
+
+bitcoin-cli -rpcwallet=sdfsfd -conf=/home/bitcoin/.bitcoin/bitcoin.conf  importdescriptors '[{"desc":"[d16dc55b/86\'/0\'/0\']xpub661MyMwAqRbcGaU2QTNQHGxaug6rypm4NVJBT5KAPUVfSdLxKHMcZY8uRdddXiJxd7GdC3zKC89zYQbWmsF8CPXbzaWSzNqmfXR6ZY6LnE7/1/*#phrv6h86","timestamp":"now","active":true,"internal":false,"range":[0,999],"next":0}]
