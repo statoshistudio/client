@@ -23,6 +23,7 @@ const ValidActions = {
     'sendrawtransaction',
     'importdescriptors',
     'getdescriptorinfo',
+    'createwallet',
   ],
   ord: ['wallet'],
 };

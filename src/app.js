@@ -19,7 +19,11 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
     'descriptors=true',
   ]).catch((e) => console.log(e));
   console.log('CREATEWALLET', createWallet);
-  if (createWallet.includes('error') && !createWallet.includes('exist')) {
+  if (
+    createWallet &&
+    createWallet.includes('error') &&
+    !createWallet.includes('exist')
+  ) {
     return res.status(500).send(createWallet);
   }
   await call(
