@@ -24,7 +24,9 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
         [`"tr(${tr}/1/*)"`],
         [],
         async (result2) => {
-          res.status(result2.status).send([result1, result2]);
+          res
+            .status(result2.success ? 200 : 500)
+            .send([result1.result, result2.result]);
         }
       );
       // res.status(result.status).send(result);
