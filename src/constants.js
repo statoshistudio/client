@@ -19,7 +19,11 @@ const AppResponse = {
 const ValidCommands = ['bitcoin-cli', 'ord'];
 
 const ValidActions = {
-  'bitcoin-cli': ['sendrawtransaction', 'importdescriptor'],
+  'bitcoin-cli': [
+    'sendrawtransaction',
+    'importdescriptor',
+    'getdescriptorinfo',
+  ],
   ord: ['wallet'],
 };
 
