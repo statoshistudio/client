@@ -33,7 +33,7 @@ const call = async function (command, action, args = [], flags = [], cb) {
   });
 
   const fullCommand = `${command} ${flagString} ${action} ${params}`;
-  console.log(fullCommand);
+  console.log('COMMAND:::::', fullCommand);
   exec(`${fullCommand}`, async (error, stdout, stderr) => {
     if (error) {
       await cb(AppResponse.SERVER_ERROR(error.message));
