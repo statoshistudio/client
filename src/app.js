@@ -8,7 +8,25 @@ const { call } = require('./utils');
 app.get('/', function (req, res) {
   res.send('Hello World');
 });
-
+app.post('/create-descriptors', async function (req, res) {
+  const tr = req.body.tr;
+  await call(
+    'bitcoin-cli',
+    'getdescriptorinfo',
+    [`"tr(${tr}/0/*)"`],
+    async (result1) => {
+      await call(
+        'bitcoin-cli',
+        'getdescriptorinfo',
+        [`"tr(${tr}/1/*)"`],
+        async (result2) => {
+          res.status(result2.status).send([result, result2]);
+        }
+      );
+      // res.status(result.status).send(result);
+    }
+  );
+});
 app.get('/:command/:action', async function (req, res) {
   console.log(req.params, req.query.params);
   await call(
