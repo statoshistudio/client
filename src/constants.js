@@ -2,7 +2,7 @@ const AppResponse = {
   INVALID_INPUT: (message) => ({
     success: false,
     status: 400,
-    message: message ?? 'Invalid Input',
+    message: message ?? 'Invalid Input. Command not allowed by gateway',
   }),
   SERVER_ERROR: (message) => ({
     success: false,
