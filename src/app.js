@@ -24,9 +24,27 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
         [`"tr(${tr}/1/*)"`],
         [],
         async (result2) => {
-          res
-            .status(result2.success ? 200 : 500)
-            .send([JSON.parse(result1.result), JSON.parse(result2.result)]);
+          const template = [
+            {
+              desc: '',
+              timestamp: 'now',
+              active: true,
+              internal: true,
+              range: [0, 999],
+              next: 0,
+            },
+            {
+              desc: '',
+              timestamp: 'now',
+              active: true,
+              internal: false,
+              range: [0, 999],
+              next: 0,
+            },
+          ];
+          template[0].desc = JSON.parse(result1.result).descriptor;
+          template[1].desc = JSON.parse(result2.result).descriptor;
+          res.status(result2.success ? 200 : 500).send(template);
         }
       );
       // res.status(result.status).send(result);
