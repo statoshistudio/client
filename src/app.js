@@ -12,11 +12,21 @@ app.get('/', function (req, res) {
 });
 app.post('/create-descriptors', jsonParser, async function (req, res) {
   const { tr, wallet } = req.body;
+  const createWallet = await callAsync('bitcoin-cli', 'createwallet', [
+    `wallet_name=${wallet}`,
+    'blank=true',
+    'disable_private_keys=true',
+    'descriptors=true',
+  ]);
+  console.log('CREATEWALLET', createWallet);
+  if (createWallet.includes('error') && !createWallet.includes('exist')) {
+    return res.status(500).send(createWallet);
+  }
   await call(
     'bitcoin-cli',
     'getdescriptorinfo',
     [`"tr(${tr}/0/*)"`],
-    [],
+    ['named'],
     async (result1) => {
       await call(
         'bitcoin-cli',

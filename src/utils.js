@@ -7,13 +7,26 @@ const {
   Flags,
 } = require('./constants');
 
-const call = async function (command, action, args = [], flags = [], cb) {
+const callAsync = async function (command, action, args = [], flags = []) {
+  return new Promise((resolve, reject) => {
+    try {
+      call(command, action, args, flags, (result) => {
+        if (!result.success) reject(result);
+        else resolve(result);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const call = function (command, action, args = [], flags = [], cb) {
   if (!ValidCommands.includes(command)) {
-    return await cb(AppResponse.INVALID_INPUT());
+    return cb(AppResponse.INVALID_INPUT());
   }
 
   if (!ValidActions[command].includes(action)) {
-    return await cb(AppResponse.INVALID_INPUT());
+    return cb(AppResponse.INVALID_INPUT());
   }
   args = Array.isArray(args) ? args : JSON.parse(args ?? '[]');
   // console.log('ARGS', args);
