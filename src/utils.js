@@ -37,9 +37,10 @@ const call = function (command, action, args = [], flags = [], cb) {
   const flagPrefix = command == 'ord' ? '--' : '-';
   flags.forEach((v) => {
     let key = typeof v == 'object' ? Object.keys(v)[0] : v;
-    flagString += `${flagPrefix}${key}=${
-      Flags[command][key] ?? Object.values(v)[0]
-    } `;
+    flagString +=
+      typeof v == 'string'
+        ? `${flagPrefix}${key} `
+        : `${flagPrefix}${key}=${Flags[command][key] ?? Object.values(v)[0]} `;
   });
   Object.keys(Flags[command]).forEach((k) => {
     flagString += `${flagPrefix}${k}=${Flags[command][k]} `;
