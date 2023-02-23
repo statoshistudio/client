@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const { exec } = require('child_process');
 const { ValidCommands, AppError } = require('./constants');
-const { call } = require('./utils');
+const { call, callAsync } = require('./utils');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
