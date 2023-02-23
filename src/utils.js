@@ -16,9 +16,9 @@ const call = async function (command, action, args = [], flags = [], cb) {
     return await cb(AppResponse.INVALID_INPUT());
   }
   args = Array.isArray(args) ? args : JSON.parse(args ?? '[]');
-  console.log('ARGS', args);
+  // console.log('ARGS', args);
   let params = args.join(' ');
-  console.log('flags', typeof flags);
+  // console.log('flags', typeof flags);
   flags = Array.isArray(flags) ? flags : JSON.parse(flags ?? '[]');
   let flagString = '';
   const flagPrefix = command == 'ord' ? '--' : '-';
@@ -37,10 +37,11 @@ const call = async function (command, action, args = [], flags = [], cb) {
   exec(`${fullCommand}`, async (error, stdout, stderr) => {
     if (error) {
       await cb(AppResponse.SERVER_ERROR(error.message));
+      console.error(error);
       return;
     }
     if (stderr) {
-      console.log(`stderr: ${stderr}`);
+      console.error(`stderr: ${stderr}`);
       await cb(AppResponse.SERVER_ERROR(error.message));
       return;
     }
