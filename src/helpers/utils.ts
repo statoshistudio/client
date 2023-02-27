@@ -1,16 +1,20 @@
-const { exec } = require('child_process');
+import { exec } from 'child_process';
+import { promises as fs } from "fs";
+import fetch from 'node-fetch';
 
-const {
-  ValidCommands,
-  AppResponse,
-  ValidActions,
-  Flags,
-} = require('./constants');
+import { nanoid } from 'nanoid/non-secure'
 
-const callAsync = async function (command, action, args = [], flags = []) {
+import { ValidCommands, AppResponse, ValidActions, Flags } from './constants';
+
+export const callAsync = async function (
+  command: string,
+  action: string,
+  args: string[] = [],
+  flags: string[] | Record<string,any>[] = []
+) {
   return new Promise((resolve, reject) => {
     try {
-      call(command, action, args, flags, (result) => {
+      call(command, action, args, flags, (result: any) => {
         if (!result.success) reject(result);
         else resolve(result);
       });
@@ -20,7 +24,10 @@ const callAsync = async function (command, action, args = [], flags = []) {
   });
 };
 
-const call = function (command, action, args = [], flags = [], cb) {
+export const call = function ( command: string,
+  action: string,
+  args: string[] = [],
+  flags: string[] | Record<string,any>[] = [], cb: (_: any)=>void) {
   if (!ValidCommands.includes(command)) {
     return cb(AppResponse.INVALID_INPUT());
   }
@@ -30,15 +37,15 @@ const call = function (command, action, args = [], flags = [], cb) {
   }
   args = Array.isArray(args) ? args : JSON.parse(args ?? '[]');
   // console.log('ARGS', args);
-  let params = args.join(' ');
+  const params = args.join(' ');
   // console.log('flags', typeof flags);
   flags = Array.isArray(flags) ? flags : JSON.parse(flags ?? '[]');
   let flagString = '';
-  const flagPrefix = command == 'ord' ? '--' : '-';
+  const flagPrefix = command === 'ord' ? '--' : '-';
   flags.forEach((v) => {
-    let key = typeof v == 'object' ? Object.keys(v)[0] : v;
+    const key = typeof v === 'object' ? Object.keys(v)[0] : v;
     flagString +=
-      typeof v == 'string'
+      typeof v === 'string'
         ? `${flagPrefix}${key} `
         : `${flagPrefix}${key}=${Flags[command][key] ?? Object.values(v)[0]} `;
   });
@@ -66,7 +73,19 @@ const call = function (command, action, args = [], flags = [], cb) {
   });
 };
 
-module.exports = {
-  call,
-  callAsync,
+export const download = async function (url: string,  fileName?: string, callback?: (_: any)=>void) {
+  try{
+    const response = await fetch(url);
+   // const blob = await response.blob();
+     const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}+${url.substring(
+      url.length - 5,
+      url.length
+    )}`
+    await fs.writeFile(fileName, buffer);
+    return fileName;
+  }catch(e) {
+    throw e;
+  }
 };

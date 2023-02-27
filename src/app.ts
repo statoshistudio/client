@@ -1,15 +1,20 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv';
+dotenv.config();
+import express, {Request, Response} from 'express';
+
+import { exec } from 'child_process';
+import { call, callAsync, download } from './helpers/utils';
+import bodyParser from 'body-parser';
+import { nanoid } from 'nanoid';
+import { inscribe } from './service/inscribe';
 const app = express();
-const { exec } = require('child_process');
-const { ValidCommands, AppError } = require('./constants');
-const { call, callAsync } = require('./utils');
-const bodyParser = require('body-parser');
+
 const jsonParser = bodyParser.json();
 
-app.get('/', function (req, res) {
+app.get('/',  (req: Request, res: Response) => {
   res.send('Hello World');
 });
+app.post('/inscribe', jsonParser, inscribe);
 app.post('/create-descriptors', jsonParser, async function (req, res) {
   const { tr, wallet } = req.body;
   try {
@@ -28,7 +33,7 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
     });
   } catch (e) {
     if (e.message.includes('error') && !e.message.includes('exist')) {
-      return res.status(500).send(createWallet);
+      return res.status(500).send(e);
     }
   }
   await call(
@@ -36,13 +41,13 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
     'getdescriptorinfo',
     [`"tr(${tr}/0/*)"`],
     [],
-    async (result1) => {
+    async (result1: any) => {
       await call(
         'bitcoin-cli',
         'getdescriptorinfo',
         [`"tr(${tr}/1/*)"`],
         [],
-        async (result2) => {
+        async (result2: any) => {
           const template = [
             {
               desc: '',
@@ -69,8 +74,8 @@ app.post('/create-descriptors', jsonParser, async function (req, res) {
             'importdescriptors',
             [`'${JSON.stringify(template).replace(/'/g, `'\\''`)}'`],
             [{ rpcwallet: wallet }],
-            async (result2) => {
-              res.status(result2.success ? 200 : 500).send(template);
+            async (result3: any) => {
+              res.status(result3.success ? 200 : 500).send(template);
             }
           );
         }
@@ -84,16 +89,16 @@ app.get('/:command/:action', async function (req, res) {
   await call(
     req.params.command,
     req.params.action,
-    req.query.params,
-    req.query.flags,
-    async (result) => {
+    req.query.params as string[],
+    req.query.flags as string[],
+    async (result: any) => {
       res.status(result.status).send(result);
     }
   );
 });
 
-var server = app.listen(8081, '0.0.0.0', function () {
-  var host = server.address().address;
-  var port = server.address().port;
-  console.log('Example app listening at http://%s:%s', host, port);
+const server = app.listen(8081, '0.0.0.0', function () {
+  const host = (server.address() as any).address;
+  const port = (server.address() as any).port;
+   console.log('Listening at http://%s:%s', host, port);
 });
