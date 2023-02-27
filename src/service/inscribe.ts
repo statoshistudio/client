@@ -10,8 +10,9 @@ try{
     console.log('SAVEDFILE', savedFile);
     const createWallet = await callAsync(
         'ord',
-        'inscribe',
+        'wallet',
         [
+            'inscribe',
           `${savedFile}`,
           `--dry-run`,
            `--no-backup`,
