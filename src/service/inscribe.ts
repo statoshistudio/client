@@ -23,7 +23,7 @@ try{
       });
       console.log('CREATED_WALLET_RESPONSE', createWallet)
 
-    res.status(200).send(savedFile);
+    res.status(200).send(createWallet);
 }catch(e) {
     res.status(500).send(e.message)
 }
