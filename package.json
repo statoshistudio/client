@@ -8,7 +8,8 @@
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "tsc": "tsc",
     "build": "npm run clean && npm run tsc",
-    "dev:start": "git pull && npm-run-all build start",
+    "dev:start": "npm-run-all build  start",
+    "dev:build": "git pull && npm run dev:start",
     "start": "node dist/app.js",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start"
   },
