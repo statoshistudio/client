@@ -22,8 +22,8 @@ try{
         throw e;
       });
       // console.log('CREATED_WALLET_RESPONSE', JSON.parse(String(createWallet)))
-console.log( createWallet);
-    res.status(200).send(JSON.parse(createWallet));
+    console.log( createWallet);
+    res.status(200).send(createWallet);
 }catch(e) {
     res.status(500).send(e.message)
 }
