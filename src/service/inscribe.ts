@@ -21,7 +21,7 @@ try{
       ).catch((e) => {
         throw e;
       });
-      console.log('CREATED_WALLET_RESPONSE', createWallet)
+      console.log('CREATED_WALLET_RESPONSE', JSON.parse(String(createWallet)))
 
     res.status(200).send(createWallet);
 }catch(e) {
