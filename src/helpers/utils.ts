@@ -87,3 +87,14 @@ export const download = async function (url: string,  fileName?: string, callbac
     throw e;
   }
 };
+
+export const toFile = async function (data: string,  fileName?: string, callback?: (_: any)=>void) {
+  try{
+    const buffer = Buffer.from(data, "utf-8");
+    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}.txt`
+    await fs.writeFile(fileName, buffer);
+    return fileName;
+  }catch(e) {
+    throw e;
+  }
+};

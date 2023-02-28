@@ -1,13 +1,16 @@
 import {Request, Response} from 'express';
-import { callAsync, download } from '../helpers/utils';
+import { callAsync, download, toFile } from '../helpers/utils';
 
 export const inscribe = async (req: Request, res: Response) => {
-    const { file, wallet } = req.body;
+    const { file, data, wallet } = req.body;
 try{
-    const savedFile = await download(
-      file
-    );
-    console.log('SAVEDFILE', savedFile);
+    let savedFile;
+    if(file) {
+        savedFile = await download(file);
+    }
+    if(data) {
+        savedFile = await toFile(data)
+    }
     const createWallet: any = await callAsync(
         'ord',
         'wallet',
