@@ -8,7 +8,7 @@ try{
       file
     );
     console.log('SAVEDFILE', savedFile);
-    const createWallet = await callAsync(
+    const createWallet: string = await callAsync(
         'ord',
         'wallet',
         [
@@ -23,7 +23,7 @@ try{
       });
       // console.log('CREATED_WALLET_RESPONSE', JSON.parse(String(createWallet)))
 
-    res.status(200).send(createWallet);
+    res.status(200).send(JSON.parse(createWallet));
 }catch(e) {
     res.status(500).send(e.message)
 }

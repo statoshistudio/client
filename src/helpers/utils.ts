@@ -11,7 +11,7 @@ export const callAsync = async function (
   action: string,
   args: string[] = [],
   flags: string[] | Record<string,any>[] = []
-) {
+): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
       call(command, action, args, flags, (result: any) => {
@@ -68,8 +68,6 @@ export const call = function ( command: string,
     }
 
     await cb({ success: true, result: stdout });
-
-    console.log(`stdout: ${stdout}`);
   });
 };
 
