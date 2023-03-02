@@ -18,6 +18,7 @@ try{
        `--no-backup`,
     ];
     if(feeRate) {
+        console.log('FEERATE', feeRate)
         params.push(`--fee_rate ${feeRate}`)
     }
     const inscribe: any = await callAsync(
