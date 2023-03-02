@@ -19,7 +19,7 @@ try{
     ];
     if(feeRate) {
         console.log('FEERATE', feeRate)
-        params.push(`--fee_rate ${feeRate}`)
+        params.push(`--fee-rate ${feeRate}`)
     }
     const inscribe: any = await callAsync(
         'ord',
