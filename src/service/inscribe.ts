@@ -31,9 +31,10 @@ try{
         params,
         [{wallet}]
       ).catch((e) => {
+        console.error(e)
         throw e;
       });
-      // console.log('CREATED_WALLET_RESPONSE', JSON.parse(String(createWallet)))
+      console.log('INSCRIBE RESPONSE', JSON.parse(inscribe.result))
       inscribe.result = JSON.parse(inscribe.result)
     console.log( inscribe);
     res.status(200).send(inscribe);
