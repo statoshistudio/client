@@ -15,6 +15,7 @@ export const callAsync = async function (
   return new Promise((resolve, reject) => {
     try {
       call(command, action, args, flags, (result: any) => {
+        console.log('RESULT', result)
         if (!result.success) reject(result);
         else resolve(result);
       });
