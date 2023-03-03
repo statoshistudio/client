@@ -69,7 +69,7 @@ export const call = function ( command: string,
       return;
     }
     // console.log('EXECUTED...', stdout);
-    await cb({ success: true, result: stdout });
+    cb({ success: true, result: stdout });
   });
 };
 
