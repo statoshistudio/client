@@ -56,6 +56,7 @@ export const call = function ( command: string,
   const fullCommand = `${command} ${flagString} ${action} ${params}`;
   console.log('COMMAND:::::', fullCommand);
   exec(`${fullCommand}`, async (error, stdout, stderr) => {
+    console.log('EXECUTED...');
     if (error) {
       await cb(AppResponse.SERVER_ERROR(error.message));
       console.error(error);

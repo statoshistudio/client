@@ -18,6 +18,7 @@ export const createWallet = async (req: Request, res: Response) => {
         throw e;
       });
     } catch (e) {
+      console.log('ERROROR',e)
       if (e.message.includes('error') && !e.message.includes('exist')) {
         return res.status(500).send(e);
       }
