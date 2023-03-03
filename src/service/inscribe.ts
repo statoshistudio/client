@@ -34,6 +34,7 @@ try{
         console.error(e)
         throw e;
       });
+      console.log('INSCRIBE RESPONSE', inscribe.result);
       try{
       console.log('INSCRIBE RESPONSE', JSON.parse(inscribe.result));
       inscribe.result = JSON.parse(inscribe.result)
