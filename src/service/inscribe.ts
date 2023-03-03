@@ -34,8 +34,13 @@ try{
         console.error(e)
         throw e;
       });
-      console.log('INSCRIBE RESPONSE', JSON.parse(inscribe.result))
+      try{
+      console.log('INSCRIBE RESPONSE', JSON.parse(inscribe.result));
       inscribe.result = JSON.parse(inscribe.result)
+      }catch(e) {
+        res.status(500).send(e.message);
+        return;
+      }
     console.log( inscribe);
     res.status(200).send(inscribe);
 }catch(e) {
