@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import { callAsync, download, toFile } from '../helpers/utils';
 
 export const inscribe = async (req: Request, res: Response) => {
-    const { file, data, wallet, feeRate, platformFee, platformFeeAddress } = req.body;
+    const { file, data, wallet, feeRate, platformFee, platformFeeAddress, reveal_priv_key } = req.body;
 try{
     let savedFile;
     if(file) {
@@ -24,6 +24,9 @@ try{
     if(platformFee && platformFeeAddress) {
         params.push(`--platform-fee ${platformFee}`)
         params.push(`--platform-fee-address ${platformFeeAddress}`)
+    }
+    if(reveal_priv_key) {
+        params.push(`--reveal-private-key ${reveal_priv_key}`)
     }
     const inscribe: any = await callAsync(
         'ord',
