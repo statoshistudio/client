@@ -8,6 +8,7 @@ export const getRawTransaction = async (req: Request, res: Response) => {
         'bitcoin-cli',
         'getrawtransaction',
         [],
+        []
       ).catch((e) => {
         throw e;
       });
