@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import { nanoid } from 'nanoid';
 import { inscribe } from './service/inscribe';
 import { createWallet } from './service/create-wallet';
+import { getRawTransaction } from './service/get-raw-tx';
 const app = express();
 
 const jsonParser = bodyParser.json();
@@ -17,6 +18,7 @@ app.get('/',  (req: Request, res: Response) => {
 });
 app.post('/inscribe', jsonParser, inscribe);
 app.post('/create-wallet', jsonParser, createWallet);
+app.post('/get-raw-tx', jsonParser, getRawTransaction);
   
 app.get('/:command/:action', async function (req, res) {
   console.log(req.params, req.query.params);
