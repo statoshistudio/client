@@ -68,7 +68,7 @@ export const call = function ( command: string,
       await cb(AppResponse.SERVER_ERROR(error.message));
       return;
     }
-    console.log('RESULLTTTT:::::', stdout);
+    console.log('RESULLTTTT:::::', cb);
     if(cb) cb({ success: true, result: stdout });
   });
 };

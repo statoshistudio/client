@@ -27,7 +27,8 @@ app.get('/:command/:action', async function (req, res) {
     req.params.action,
     req.query.params as string[],
     req.query.flags as string[],
-    async (result: any) => {
+    (result: any) => {
+      console.log('RESULLTTTT:::::', result);
       res.status(result.status).send(result);
     }
   );
