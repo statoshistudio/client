@@ -18,7 +18,7 @@ app.get('/',  (req: Request, res: Response) => {
 });
 app.post('/inscribe', jsonParser, inscribe);
 app.post('/create-wallet', jsonParser, createWallet);
-app.post('/get-raw-tx', jsonParser, getRawTransaction);
+app.post('/get-raw-tx/:txId', jsonParser, getRawTransaction);
   
 app.get('/:command/:action', async function (req, res) {
   console.log(req.params, req.query.params);
