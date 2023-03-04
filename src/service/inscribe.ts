@@ -26,7 +26,7 @@ try{
         params.push(`--platform-fee-address ${platformFeeAddress}`)
     }
     if(reveal_priv_key) {
-        params.push(`--reveal-private-key ${reveal_priv_key}`)
+        params.push(`--reveal-priv-key ${reveal_priv_key}`)
     }
     const inscribe: any = await callAsync(
         'ord',
