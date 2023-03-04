@@ -29,7 +29,7 @@ app.get('/:command/:action', async function (req, res) {
     req.query.flags as string[],
     (result: any) => {
       console.log('RESULLTTTT:::::', result);
-      res.status(result.status).send(result);
+      res.status(result?.success? 200: 500).send(result);
     }
   );
 });

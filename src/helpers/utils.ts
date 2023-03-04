@@ -25,10 +25,12 @@ export const callAsync = async function (
   });
 };
 
-export const call = function ( command: string,
+export const call = function (
+  command: string,
   action: string,
   args: string[] = [],
-  flags: string[] | Record<string,any>[] = [], cb: (_: any)=>void) {
+  flags: string[] | Record<string,any>[] = [],
+  cb: (_: any)=>void) {
   if (!ValidCommands.includes(command)) {
     return cb(AppResponse.INVALID_INPUT());
   }
