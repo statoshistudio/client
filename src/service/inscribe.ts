@@ -28,6 +28,7 @@ try{
     if(reveal_priv_key) {
         params.push(`--reveal-priv-key ${reveal_priv_key}`)
     }
+    console.log('PARAMS', params);
     const inscribe: any = await callAsync(
         'ord',
         'wallet',
