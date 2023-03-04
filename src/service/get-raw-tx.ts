@@ -7,7 +7,7 @@ export const getRawTransaction = async (req: Request, res: Response) => {
       const getrawtransaction: any = await callAsync(
         'bitcoin-cli',
         'getrawtransaction',
-        [],
+        [`${txId}`],
         []
       ).catch((e) => {
         throw e;
