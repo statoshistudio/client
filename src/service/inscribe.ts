@@ -31,7 +31,7 @@ try{
     if(commit_tx) {
         params.push(`--commit-tx ${commit_tx}`)
     }
-    if(destination {
+    if(destination) {
         params.push(`--destination ${destination}`)
     }
     if(change_addresses) {
