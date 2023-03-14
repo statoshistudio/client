@@ -95,7 +95,7 @@ export const download = async function (url: string,  fileName?: string, callbac
 export const toFile = async function (data: string,  fileName?: string, callback?: (_: any)=>void) {
   try{
     const buffer = Buffer.from(data, "utf-8");
-    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}.txt`
+    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}.json`
     await fs.writeFile(fileName, buffer);
     return fileName;
   }catch(e) {
