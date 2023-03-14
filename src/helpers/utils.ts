@@ -32,10 +32,12 @@ export const call = function (
   flags: string[] | Record<string,any>[] = [],
   cb: (_: any)=>void) {
   if (!ValidCommands.includes(command)) {
+    console.error(`Command "${command} not allowed`)
     return cb(AppResponse.INVALID_INPUT());
   }
 
   if (!ValidActions[command].includes(action)) {
+    console.error(`Action ${action} not allowed for command "${command}"`)
     return cb(AppResponse.INVALID_INPUT());
   }
   args = Array.isArray(args) ? args : JSON.parse(args ?? '[]');
