@@ -25,7 +25,8 @@ export const ValidActions: Record<string, any> = {
     'getdescriptorinfo',
     'createwallet',
     'getrawtransaction',
-    'listunspent'
+    'listunspent',
+    'sendrawtransaction'
   ],
   ord: ['wallet', 'inscribe', 'send'],
 };
