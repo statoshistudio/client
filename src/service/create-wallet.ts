@@ -1,8 +1,11 @@
 import {Request, Response} from 'express';
+import { trusted } from 'mongoose';
 import { call, callAsync, download, toFile } from '../helpers/utils';
+import Wallet from '../models/wallet.schema'
 
 export const createWallet = async (req: Request, res: Response) => {
     const { tr, name } = req.body;
+    const exists = await Wallet.findOneAndUpdate({name}, {$setOnInsert: {name, descriptor: tr}});
     try {
       const createWallet = await callAsync(
         'bitcoin-cli',
@@ -65,6 +68,7 @@ export const createWallet = async (req: Request, res: Response) => {
                 res.status(result3.success ? 200 : 500).send(template);
               }
             );
+            await Wallet.findOneAndUpdate({name}, {$setOnInsert: {name, descriptor: tr}, $set: {imported: true}});
           }
         );
         // res.status(result.status).send(result);

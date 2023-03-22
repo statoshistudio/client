@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid';
 import { inscribe } from './service/inscribe';
 import { createWallet } from './service/create-wallet';
 import { getRawTransaction } from './service/get-raw-tx';
+import mongoose from "mongoose";
 const app = express();
 
 const jsonParser = bodyParser.json();
@@ -33,8 +34,13 @@ app.get('/:command/:action', async function (req, res) {
   );
 });
 
-const server = app.listen(8081, '0.0.0.0', function () {
-  const host = (server.address() as any).address;
-  const port = (server.address() as any).port;
-   console.log('Listening at http://%s:%s', host, port);
-});
+mongoose.connect(process.env.DB_URL, {autoCreate: true})
+.then(()=> 
+  {
+    const server = app.listen(8081, '0.0.0.0', function () {
+    const host = (server.address() as any).address;
+    const port = (server.address() as any).port;
+    console.log('Listening at http://%s:%s', host, port);
+    })
+  }
+  );

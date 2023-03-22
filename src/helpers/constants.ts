@@ -27,7 +27,7 @@ export const ValidActions: Record<string, any> = {
     'getrawtransaction',
     'listunspent'
   ],
-  ord: ['wallet', 'inscribe'],
+  ord: ['wallet', 'inscribe', 'send'],
 };
 
 export const Flags: Record<string, any> = {
