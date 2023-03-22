@@ -29,7 +29,7 @@ app.get('/:command/:action', async function (req, res) {
     req.query.params as string[],
     req.query.flags as string[],
     (result: any) => {
-      res.status(result?.success? 200: 500).send(result);
+      res.status(result?.success? 200: 400).send(result);
     }
   );
 });
