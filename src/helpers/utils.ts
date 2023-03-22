@@ -42,6 +42,7 @@ export const call = function (
   }
   args = Array.isArray(args) ? args : JSON.parse(args ?? '[]');
   // console.log('ARGS', args);
+  console.log('ARGS', args);
   const params = args.join(' ');
   // console.log('flags', typeof flags);
   flags = Array.isArray(flags) ? flags : JSON.parse(flags ?? '[]');

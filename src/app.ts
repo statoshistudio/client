@@ -22,7 +22,7 @@ app.post('/create-wallet', jsonParser, createWallet);
 // app.get('/get-raw-tx/:txId', jsonParser, getRawTransaction);
   
 app.get('/:command/:action', async function (req, res) {
-  console.log(req.params, req.query.params);
+
   await call(
     req.params.command,
     req.params.action,
