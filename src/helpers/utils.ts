@@ -62,7 +62,7 @@ export const call = function (
   const fullCommand = `${command} ${flagString} ${action} ${params}`;
   console.log('COMMAND:::::', fullCommand);
   exec(`${fullCommand}`, async (error, stdout, stderr) => {
- 
+    console.log('RESULLTTTT:::::', error, stderr, stdout);
     if (error) {
       await cb(AppResponse.SERVER_ERROR(error.message));
       console.error(error);
@@ -73,7 +73,7 @@ export const call = function (
       await cb(AppResponse.SERVER_ERROR(error.message));
       return;
     }
-    console.log('RESULLTTTT:::::', stdout);
+   
     if(cb) cb({ success: true, result: stdout });
   });
 };
