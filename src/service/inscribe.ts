@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import { call, download, toFile } from '../helpers/utils';
 
 export const inscribe = async (req: Request, res: Response) => {
-    const { file, data, wallet, feeRate, platformFee, platformFeeAddress, reveal_priv_key, commit_tx, destination, change_addresses } = req.body;
+    const { file, data, wallet, no_backup, feeRate, platformFee, platformFeeAddress, reveal_priv_key, commit_tx, destination, change_addresses } = req.body;
 try{
     let savedFile;
     if(file) {
@@ -37,6 +37,9 @@ try{
     if(change_addresses) {
         params.push(`--change-address-1 ${change_addresses[0]}`)
         params.push(`--change-address-2 ${change_addresses[1]}`)
+    }
+    if(no_backup) {
+        params.push(`--no-backup true`)
     }
     console.log('PARAMS', params, wallet);
     call( 'ord',
