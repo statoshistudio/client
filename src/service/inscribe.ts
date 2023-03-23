@@ -38,9 +38,7 @@ try{
         params.push(`--change-address-1 ${change_addresses[0]}`)
         params.push(`--change-address-2 ${change_addresses[1]}`)
     }
-    if(no_backup) {
-        params.push(`--no-backup true`)
-    }
+    
     console.log('PARAMS', params, wallet);
     call( 'ord',
     'wallet',
