@@ -10,10 +10,26 @@ import { inscribe } from './service/inscribe';
 import { createWallet } from './service/create-wallet';
 import { getRawTransaction } from './service/get-raw-tx';
 import mongoose from "mongoose";
+import { createProxyMiddleware } from 'http-proxy-middleware';
 const app = express();
 
 const jsonParser = bodyParser.json();
+const options = {
+  target: process.env.ORDINAL_HTTP_HOST, // target host
+  changeOrigin: true, // needed for virtual hosted sites
+  onProxyRes(proxyRes: any, req: any, res: any) {
+    proxyRes.headers['Content-Type'] = 'application/json'; // add new header to respons
+  },
+  onError: (error: any, req: any, res: any) => {
+    res.headers['Content-Type'] = 'application/json'; // add new header to respons
+    console.log(error.message);
+    res.status(500).send({meta: {success: false, message: "Upstream error"}, data: {}})
+  }
+};
 
+// create the proxy (without context)
+const ordinalProxy = createProxyMiddleware(options);
+app.use('/api', ordinalProxy);
 app.get('/',  (req: Request, res: Response) => {
   res.send('Hello World');
 });
