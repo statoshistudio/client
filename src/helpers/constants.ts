@@ -27,6 +27,7 @@ export const ValidActions: Record<string, any> = {
     'getrawtransaction',
     'listunspent',
     'sendrawtransaction',
+    'gettransaction'
   ],
   ord: ['wallet', 'inscribe', 'send', 'index'],
 };
