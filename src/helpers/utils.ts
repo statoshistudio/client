@@ -61,7 +61,7 @@ export const call = function (
 
   const fullCommand = `${command} ${flagString} ${action} ${params}`;
   console.log('COMMAND:::::', fullCommand);
-  exec(`${fullCommand}`, {maxBuffer: 1024 * 1023}, async (error, stdout, stderr) => {
+  exec(`${fullCommand}`, {maxBuffer: undefined}, async (error, stdout, stderr) => {
     
     if (error) {
       await cb(AppResponse.SERVER_ERROR(error.message));
