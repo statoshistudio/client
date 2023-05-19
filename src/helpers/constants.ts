@@ -38,7 +38,7 @@ export const Flags: Record<string, any> = {
   },
   ord: {
     'bitcoin-data-dir': process.env.BITCOIN_DATA_DIR,
-    config: process.env.ORD_CONFIG,
+    // config: process.env.ORD_CONFIG,
     'data-dir': process.env.ORD_DATA_DIR,
   },
 };
