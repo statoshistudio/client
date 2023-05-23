@@ -3,7 +3,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   root: true,
-  'no-console': false,
+  // 'no-console': false,
   env: {
     node: true,
   },

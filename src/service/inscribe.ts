@@ -1,93 +1,110 @@
 import { Request, Response } from 'express';
 import { call, download, toFile } from '../helpers/utils';
+import crypto from "crypto";
+import axios from "axios";
 
+type Inscribe = {
+ // satpoint: string,
+ fee_rate: string,
+ // commit_fee_rate: string,
+ file: string,
+ //  no_backup?: boolean,
+// no_limit: boolean,
+wallet: string;
+dry_run: boolean;
+ platform_fee_address: string,
+  platform_fee: string,
+  destination?: string,
+  verbose?: boolean,
+  commit_tx?: string,
+   change_address_1?: string,
+  change_address_2?: string,
+  creator_wallet?: string,
+  creator_fee?: string,
+}
 export const inscribe = async (req: Request, res: Response) => {
   const {
     file,
     data,
     wallet,
-    no_backup,
     feeRate,
     creatorFee,
     creatorWallet,
     platformFee,
     platformFeeAddress,
-    reveal_priv_key,
     commit_tx,
     destination,
     change_addresses,
   } = req.body;
   try {
+  
     let savedFile;
     if (file) {
-      savedFile = await download(file);
+      const fileName =  `/tmp/${crypto.createHash('md5').update(file).digest("hex")}-${file.substring(
+        file.length - 5,
+        file.length
+      )}`
+      savedFile = await download(file, fileName);
     }
     if (data) {
-      savedFile = await toFile(data);
+      const fileName =  `/tmp/${crypto.createHash('md5').update(data).digest("hex")}.json`
+      savedFile = await toFile(data, fileName);
     }
-    const params: string[] = [
-      'inscribe',
-      `${savedFile}`,
-      `--dry-run`,
-      `--no-backup`,
-    ];
-    if (feeRate) {
-      console.log('FEERATE', feeRate);
-      params.push(`--fee-rate ${feeRate}`);
-    }
-    if (platformFee && platformFeeAddress) {
-      params.push(`--platform-fee ${platformFee}`);
-      params.push(`--platform-fee-address ${platformFeeAddress}`);
-    }
-    if (creatorFee && creatorWallet) {
-      params.push(`--creator-fee ${creatorFee}`);
-      params.push(`--creator-wallet ${creatorWallet}`);
-    }
-    if (reveal_priv_key) {
-      params.push(`--reveal-priv-key ${reveal_priv_key}`);
-    }
-    if (commit_tx) {
-      params.push(`--commit-tx ${commit_tx}`);
-    }
-    if (destination) {
-      params.push(`--destination ${destination}`);
-    }
-    if (change_addresses) {
-      params.push(`--change-address-1 ${change_addresses[0]}`);
-      params.push(`--change-address-2 ${change_addresses[1]}`);
-    }
+    // const params: string[] = [
+    //   'inscribe',
+    //   `${savedFile}`,
+    //   `--dry-run`,
+    //   `--no-backup`,
+    // ];
+    // if (feeRate) {
+    //   console.log('FEERATE', feeRate);
+    //   params.push(`--fee-rate ${feeRate}`);
+    // }
+    // if (platformFee && platformFeeAddress) {
+    //   params.push(`--platform-fee ${platformFee}`);
+    //   params.push(`--platform-fee-address ${platformFeeAddress}`);
+    // }
+    // if (creatorFee && creatorWallet) {
+    //   params.push(`--creator-fee ${creatorFee}`);
+    //   params.push(`--creator-wallet ${creatorWallet}`);
+    // }
+    // if (reveal_priv_key) {
+    //   params.push(`--reveal-priv-key ${reveal_priv_key}`);
+    // }
+    // if (commit_tx) {
+    //   params.push(`--commit-tx ${commit_tx}`);
+    // }
+    // if (destination) {
+    //   params.push(`--destination ${destination}`);
+    // }
+    // if (change_addresses) {
+    //   params.push(`--change-address-1 ${change_addresses[0]}`);
+    //   params.push(`--change-address-2 ${change_addresses[1]}`);
+    // }
+    
+    const query: Inscribe = {
+     // satpoint: string,
+      fee_rate: feeRate,
+      file: savedFile,
 
-    console.log('PARAMS', params, wallet);
-    call('ord', 'wallet', params, [{ wallet }], (inscribe) => {
-      console.log('INSCRIBE RESPONSE', inscribe.result);
-      if (inscribe.success) {
-        inscribe.result = JSON.parse(inscribe.result);
-        res.status(200).send(inscribe);
-        return;
-      } else {
-        res.status(500).send(inscribe);
-      }
-    });
-    // const inscribe: any = await call(
-    //     'ord',
-    //     'wallet',
-    //     params,
-    //     [{wallet}]
-    //   ).catch((e) => {
-    //     console.error(e)
-    //     throw e;
-    //   });
-    //   console.log('INSCRIBE RESPONSE', inscribe.result);
-    //   try{
-    //   console.log('INSCRIBE RESPONSE', JSON.parse(inscribe.result));
-    //   inscribe.result = JSON.parse(inscribe.result)
-    //   }catch(e) {
-    //     res.status(500).send(e.message);
-    //     return;
-    //   }
-    // console.log( inscribe);
-    // res.status(200).send(inscribe);
+      platform_fee_address: platformFeeAddress,
+        platform_fee: platformFee,
+        dry_run:true,
+        wallet: wallet,
+        destination: destination,
+    
+        commit_tx: commit_tx,
+        change_address_1: change_addresses?.[0],
+        change_address_2: change_addresses?.[1],
+        creator_wallet: creatorWallet,
+        creator_fee: creatorFee,
+    };
+   const url = `${process.env.ORDINAL_HTTP_HOST}/api/inscribe`;
+    const inscribe = await axios.get(url, { params: {...query} });
+    // console.log('REsonse', inscribe.data);
+    res.status(200).send(inscribe.data);
   } catch (e) {
+    console.log('ERRORR', e.message, process.env.ORDINAL_HTTP_HOST)
     res.status(500).send(e.message);
   }
 };
