@@ -2,6 +2,14 @@ import { Request, Response } from 'express';
 import { call, download, toFile } from '../helpers/utils';
 import crypto from "crypto";
 import axios from "axios";
+import http from "http";
+import https from "https";
+const httpAgent = new http.Agent({ keepAlive: true });
+const httpsAgent = new https.Agent({ keepAlive: true });
+const instance = axios.create({
+  httpAgent,  // httpAgent: httpAgent -> for non es6 syntax
+  httpsAgent,
+});
 
 type Inscribe = {
  // satpoint: string,
@@ -40,14 +48,14 @@ export const inscribe = async (req: Request, res: Response) => {
   
     let savedFile;
     if (file) {
-      const fileName =  `/tmp/${crypto.createHash('md5').update(file).digest("hex")}-${file.substring(
+      const fileName =  `${process.env.ORD_FILE_DIR ?? '/tmp'}/${crypto.createHash('md5').update(file).digest("hex")}-${file.substring(
         file.length - 5,
         file.length
       )}`
       savedFile = await download(file, fileName);
     }
     if (data) {
-      const fileName =  `/tmp/${crypto.createHash('md5').update(data).digest("hex")}.json`
+      const fileName =  `${process.env.ORD_FILE_DIR ?? '/tmp'}/${crypto.createHash('md5').update(data).digest("hex")}.json`
       savedFile = await toFile(data, fileName);
     }
     // const params: string[] = [
@@ -100,7 +108,7 @@ export const inscribe = async (req: Request, res: Response) => {
         creator_fee: creatorFee,
     };
    const url = `${process.env.ORDINAL_HTTP_HOST}/api/inscribe`;
-    const inscribe = await axios.get(url, { params: {...query} });
+    const inscribe = await axios.get(url, { params: {...query}, httpAgent, httpsAgent });
     // console.log('REsonse', inscribe.data);
     res.status(200).send(inscribe.data);
   } catch (e) {

@@ -78,30 +78,26 @@ export const call = function (
   });
 };
 
-export const download = async function (url: string,  fileName?: string, callback?: (_: any)=>void) {
-  try{
+export const download = async function (url: string,  fileName?: string) {
+
     const response = await fetch(url);
    // const blob = await response.blob();
      const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}+${url.substring(
+    fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}+${url.substring(
       url.length - 5,
       url.length
     )}`
     await fs.writeFile(fileName, buffer);
     return fileName;
-  }catch(e) {
-    throw e;
-  }
+  
 };
 
-export const toFile = async function (data: string,  fileName?: string, callback?: (_: any)=>void) {
-  try{
+export const toFile = async function (data: string,  fileName?: string) {
+
     const buffer = Buffer.from(data, "utf-8");
-    fileName =  fileName ?? `/tmp/${nanoid()}-${Date.now()}.json`
+    fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}.json`
     await fs.writeFile(fileName, buffer);
     return fileName;
-  }catch(e) {
-    throw e;
-  }
+  
 };
