@@ -1,9 +1,8 @@
 import { exec } from 'child_process';
-import { promises as fs } from "fs";
+import fs, { promises as fsPromise } from "fs";
 import fetch from 'node-fetch';
 
-import { nanoid } from 'nanoid/non-secure'
-
+import { nanoid } from 'nanoid/non-secure';
 import { ValidCommands, AppResponse, ValidActions, Flags } from './constants';
 
 export const callAsync = async function (
@@ -79,25 +78,32 @@ export const call = function (
 };
 
 export const download = async function (url: string,  fileName?: string) {
+  fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}+${url.substring(
+    url.length - 5,
+    url.length
+  )}`;
 
+  
+  if (fileName && fs.existsSync(fileName)) {
+    return fileName;
+  }
     const response = await fetch(url);
    // const blob = await response.blob();
      const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}+${url.substring(
-      url.length - 5,
-      url.length
-    )}`
-    await fs.writeFile(fileName, buffer);
+   
+    await fsPromise.writeFile(fileName, buffer);
     return fileName;
   
 };
 
-export const toFile = async function (data: string,  fileName?: string) {
-
+export const toFile = async function (data: string,  fileName?: string) {   
+    fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}.json`;
+    if (fileName && fs.existsSync(fileName)) {
+      return fileName;
+    }
     const buffer = Buffer.from(data, "utf-8");
-    fileName =  fileName ?? `${process.env.ORD_FILE_DIR ?? '/tmp'}/${nanoid()}-${Date.now()}.json`
-    await fs.writeFile(fileName, buffer);
+    await fsPromise.writeFile(fileName, buffer);
     return fileName;
   
 };
